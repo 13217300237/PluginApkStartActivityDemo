@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PluginManager.getInstance().init(this);
 
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
