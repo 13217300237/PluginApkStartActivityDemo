@@ -1,6 +1,7 @@
 package study.hank.com.plugin_lib;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -22,7 +23,7 @@ import dalvik.system.DexClassLoader;
  */
 public class PluginManager {
 
-    //应该是单例模式，因为一个宿主app只需要一个插件管理器对象即可
+    //*****应该是单例模式，因为一个宿主app只需要一个插件管理器对象即可*****
     private PluginManager() {
     }
 
@@ -45,13 +46,8 @@ public class PluginManager {
     private DexClassLoader dexClassLoader;//类加载器
     private Resources resources;//资源包
 
-    /**
-     * 要用application 因为这是单例，直接用Activity对象作为上下文会导致内存泄漏
-     *
-     * @param context
-     */
     public void init(Context context) {
-        mContext = context.getApplicationContext();
+        mContext = context.getApplicationContext();//要用application 因为这是单例，直接用Activity对象作为上下文会导致内存泄漏
     }
 
     /**
@@ -94,5 +90,18 @@ public class PluginManager {
 
     public Resources getResources() {
         return resources;
+    }
+
+    /**
+     * 既然无论是宿主启动插件的Activity，还是插件内部的跳转都要使用ProxyActivity作为代理，
+     * 何不写一个公共方法以供调用呢？
+     *
+     * @param context
+     * @param realActivityClassName
+     */
+    public void gotoActivity(Context context, String realActivityClassName) {
+        Intent intent = new Intent(context, ProxyActivity.class);
+        intent.putExtra(PluginApkConst.TAG_CLASS_NAME, realActivityClassName);
+        context.startActivity(intent);
     }
 }

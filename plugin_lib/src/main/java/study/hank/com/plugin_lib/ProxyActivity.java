@@ -6,10 +6,8 @@ import android.os.Bundle;
 
 /**
  * 代理Activity
- * <p>
  * 作用：接收来自宿主的跳转意图，并且拿到其中的参数
- * <p>
- * 这里只能继承Activity，而不是AppCompatActivity，否则会报空指针
+ * 这里只能继承Activity，而不是AppCompatActivity，否则会报“空指针”
  * 原因是，AppCompatActivity会调用上下文，你问为啥？不知道啊，问谷歌大佬
  */
 public class ProxyActivity extends Activity {

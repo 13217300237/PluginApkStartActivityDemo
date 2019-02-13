@@ -10,7 +10,7 @@ import android.view.View;
 /**
  * 插件Activity的基类，插件中的所有Activity，都要继承它
  */
-public class PluginBaseActivity extends AppCompatActivity implements IPlugin {
+public abstract class PluginBaseActivity extends AppCompatActivity implements IPlugin {
 
     private final String TAG = "PluginBaseActivityTag";
     protected Activity proxy;//上下文
@@ -119,13 +119,11 @@ public class PluginBaseActivity extends AppCompatActivity implements IPlugin {
     @Override
     public void startActivity(Intent intent) {//同理
         if (from == IPlugin.FROM_INTERNAL) {
-            super.startActivity(intent);
+            super.startActivity(intent);//原intent只能用于插件单独运行时
         } else {
-            // 如果是插件内的跳转，控制权仍然是在宿主上下文里面，所以--!
+            // 如果是集成模式下，插件内的跳转，控制权 仍然是在宿主上下文里面，所以--!
             // 先跳到代理Activity，由代理Activity展示真正的Activity内容
-            Intent temp = new Intent(proxy, ProxyActivity.class);
-            temp.putExtra(PluginApkConst.TAG_CLASS_NAME, intent.getComponent().getClassName());
-            proxy.startActivity(temp);
+            PluginManager.getInstance().gotoActivity(proxy, intent.getComponent().getClassName());
         }
     }
 

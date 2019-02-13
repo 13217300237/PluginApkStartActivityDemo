@@ -38,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProxyActivity.class);// 先跳到代理Activity，由代理Activity展示真正的Activity内容
-                intent.putExtra(PluginApkConst.TAG_CLASS_NAME, PluginManager.getInstance().getPackageInfo().activities[0].name);
-                startActivity(intent);
+                // 先跳到代理Activity，由代理Activity展示真正的Activity内容
+                PluginManager.getInstance().gotoActivity(MainActivity.this,
+                        PluginManager.getInstance().getPackageInfo().activities[0].name);
+
             }
         });
     }
